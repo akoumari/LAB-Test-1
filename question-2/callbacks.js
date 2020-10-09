@@ -1,41 +1,32 @@
-const resolvedPromise = () =>{
-    return new Promise((resolve) =>{
-        setTimeout(() => {
-            resolve("message: delayed success!")
-        }, 500);
-    })
-}
-
-const rejectedPromise = () =>{
-    return new Promise((resolve) =>{
-        setTimeout(() => {
-            try{
-                resolve('error:', 'delayed exception!');
-            } catch(e){
-                reject()
+const resolvedPromise = (ms) => {
+    setTimeout(() => {
+        var promise = new Promise(function(resolve, reject) {
+            if(ms >= 500) {
+                resolve("Message : delayed promise");
             }
-        }, 500);
-    });
+            else{
+                reject(Error("It broke"));
+            }
+        });
+        console.log(promise);
+    }, ms)
 }
 
-/*
-const delayedSuccess= () =>{
-    setTimeout(() => {
-        let success = {'message': 'delayed success!'}
-        console.log(success);
-    }, 500)
+resolvedPromise(500);
+const rejectedPromise  = (ms) => {
+    try {
+        if(ms < 500){throw new Error("Error: rejected time");}
+        setTimeout(() => {
+            if(ms <= 500){
+                var promise = new Promise(function(resolve, reject) {
+                    resolve("Message : delayed exception!");     
+                });
+            }
+            console.log(promise);
+        }, ms)
+    } catch(e){
+        console.error("Error : delayed exception!");
+    }
 }
 
-const delayedExpection= () => {
-    setTimeout(() => {
-        try{
-            throw new Error('error: delayed exception!');
-        } catch (e){
-            console.error(e);
-        }
-    }, 500)
-}
-*/
-
-resolvedPromise()
-rejectedPromise()
+rejectedPromise(400);
